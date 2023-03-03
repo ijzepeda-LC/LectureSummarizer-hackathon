@@ -187,3 +187,6 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# based on the example at their website:
+# https://docs.python-telegram-bot.org/en/stable/examples.conversationbot.html
