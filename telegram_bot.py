@@ -1,8 +1,4 @@
 #!/usr/bin/env python
-# pylint: disable=unused-argument, wrong-import-position
-# This program is dedicated to the public domain under the CC0 license.
-
-
 
 import logging
 from telegram import __version__ as TG_VER
@@ -84,16 +80,12 @@ def get_summary(prompt,model="text-ada-001",language="", verbose=False):
 ##############
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Starts the conversation and asks the user about their Language."""
-    # reply_keyboard = [["English", "Spanish", "Hindi", "Nepali"]]
-
+    """Starts the conversation and asks the user to send a voicenote."""
+   
     await update.message.reply_text(
         f"Hi! This is a {BOTNAME}. \nI will transcript your audios and provide a summary of it "
         "\nSend /cancel to stop talking to me.\n\n"
         "Start sending a VOICE NOTE",
-        # reply_markup=ReplyKeyboardMarkup(
-        #     reply_keyboard, one_time_keyboard=True, input_field_placeholder="Select Language"
-        # ),
     )
 
     return AUDIO
@@ -102,7 +94,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def voice(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Stores the audio."""
     await update.message.reply_text(
-        "Got your audio, hold on...."
+        "Got your voicenote, hold on...."
     )
     user = update.message.from_user
     #1
@@ -160,21 +152,6 @@ async def audio(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     )  
 
 
-
-# async def transcript(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-#     """Stores the audio."""
-#     await update.message.reply_text(
-#         "1-Got your text, hold on...."
-#     )
-#     # user = update.message.from_user
-#     # audio_file = await update.message.audio[-1].get_file()
-#     # await audio_file.download_to_drive("user_audio.wav")
-#     # logger.info("Audio of %s: %s", user.first_name, "user_audio.wav")
-#     # await update.message.reply_text(
-#     #     "Translating"
-#     # )
-
-
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Cancels and ends the conversation."""
     user = update.message.from_user
@@ -191,25 +168,20 @@ def main() -> None:
     # Create the Application and pass it your bot's token.
     application = Application.builder().token(TOKEN).build()
 
-    # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
     conv_handler = ConversationHandler(
-        # entry_points=[CommandHandler("start", start)],
         entry_points=[CommandHandler("start", start)],
-
         states={
         AUDIO: [
         MessageHandler(filters.VOICE, voice),
         MessageHandler(filters.AUDIO, audio),
                     # MessageHandler(filters.TEXT, summary)
-                    ], #, CommandHandler("skip", skip_audio)
+                    ], 
 
         },
         fallbacks=[CommandHandler("cancel", cancel)],
     )
 
     application.add_handler(conv_handler)
-
-    # Run the bot until the user presses Ctrl-C
     application.run_polling()
 
 
