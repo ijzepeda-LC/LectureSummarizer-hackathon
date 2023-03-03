@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf32 -*-
 import os
 import whisper
 import streamlit as st
@@ -11,8 +13,8 @@ import sounddevice as sd
 import soundfile as sf 
 
 # Constants and variables
-# openai.api_key = toml.load('secrets.toml')['OPENAI_API_KEY']#os.getenv("OPENAI_API_KEY")
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = toml.load('secrets.toml')['OPENAI_API_KEY']#os.getenv("OPENAI_API_KEY")
+# openai.api_key = os.getenv("OPENAI_API_KEY")
 verbose=True
 
 t = datetime.datetime.today()
@@ -52,6 +54,8 @@ if "process_audio" not in st.session_state:
     st.session_state['process_audio'] = False
 if "audio_file" not in st.session_state:
     st.session_state.audio_file=""
+if "autosummary" not in st.session_state:
+    st.session_state.autosummary=False
 
 def save_pdf(): 
     pdf = FPDF() 
@@ -59,22 +63,24 @@ def save_pdf():
     if language_radio in ["Hindi","Nepali"]:
         pdf.add_font('Mangal', '', './fonts/Mangal.ttf', uni=True)
         pdf.add_font('TiroDevanagariHindi', '', './fonts/TiroDevanagariHindi.ttf', uni=True)
-        font="Mangal"
+        font="TiroDevanagariHindi"
+        fontstyle=False
         #!/usr/bin/env python
         # -*- coding: utf32 -*-
     else:
         font="Arial"
+        fontstyle=True
 
-    pdf.set_font(font,"B", size = 20)
-    pdf.cell(0, 10, txt = f"Transcript - {D}", align = 'C')
+    pdf.set_font(font,"B" if fontstyle else "", size = 20)
+    pdf.cell(0, 10, txt = f"Transcript-{D}", align = 'C')
     pdf.ln()
-    pdf.set_font(font,"I", size = 12)
+    pdf.set_font(font,"I" if fontstyle else "", size = 12)
     pdf.multi_cell(0, 10, txt = "Summary:\n"+st.session_state['summary'])
     pdf.ln()
     pdf.set_font(font, size = 15)
     pdf.multi_cell(0, 10, txt = "Transcript:\n"+ st.session_state['transcript'])
     pdf.ln()
-    pdf.output(f"transcript_{D}.pdf").encode('latin-1','ignore') 
+    pdf.output(f"transcript_{D}.pdf",'F')#.encode('latin-1','ignore') 
     return ""
  
 
@@ -146,8 +152,16 @@ if not os.path.exists(filename):
     if audio_file_raw is not None:
         st.session_state.audio_file=audio_file_raw.name
         filename=audio_file_raw.name
+        # audio_path = "uploaded_audio.mp3"
+        #Save file to current location, to work on it later
+        with open(filename, "wb") as f:
+            f.write(audio_file_raw.getbuffer())
         st.session_state['process_audio'] = True #entra en loop, porque la condicion se cumple de nuevo
-
+    # if uploaded_file is not None:
+    #     # Save the MP3 file to disk
+    #     audio_path = "uploaded_audio.mp3"
+    #     with open(audio_path, "wb") as f:
+    #         f.write(uploaded_file.getbuffer())
 ##################
 ## Process audio
 ##################
@@ -189,8 +203,14 @@ if st.session_state.process_audio:
         get_summary(out['text'],_model,_language)
         #Avoid repeating the process once it is done
         st.session_state.process_audio=False
-
+        audio_file_raw=None
+        # filename=""
+##################
+####LAYOUT2#######
+##################
  
 transcript=st.text_area("Transcript",st.session_state['transcript'])
+sumbtn=st.button("Get Summary", on_click=get_summary,kwargs={'prompt':transcript,'model':_model,'language':_language, 'verbose':True})#, disabled=  not st.session_state.autosummary)
+# sumbtn=st.button("Get Summary", on_click=get_summary,kwargs={'prompt':st.session_state['transcript'],'model':_model,'language':_language, 'verbose':True})#, disabled=  not st.session_state.autosummary)
 summary_text=st.text_area("Summary",st.session_state['summary'])
 save_btn=st.button("Save PDF",on_click=save_pdf, disabled=st.session_state['saving'])
