@@ -1,5 +1,5 @@
 openai
 ffmpeg-python==0.2.0
 fpdf
-python-sounddevice
+sounddevice
 soundfile
