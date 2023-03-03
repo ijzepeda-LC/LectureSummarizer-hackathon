@@ -1,9 +1,9 @@
 openai
 ffmpeg-python==0.2.0
+pyaudio
 fpdf
 sounddevice
 soundfile
 whisper
 moviepy
 toml
-PyAudio==0.2.11
