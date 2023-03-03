@@ -11,7 +11,8 @@ import sounddevice as sd
 import soundfile as sf 
 
 # Constants and variables
-openai.api_key = toml.load('secrets.toml')['OPENAI_API_KEY']#os.getenv("OPENAI_API_KEY")
+# openai.api_key = toml.load('secrets.toml')['OPENAI_API_KEY']#os.getenv("OPENAI_API_KEY")
+openai.api_key = os.getenv("OPENAI_API_KEY")
 verbose=True
 
 t = datetime.datetime.today()
