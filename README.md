@@ -4,6 +4,8 @@
 
 TL;DR : An app that will record/upload an audio and get a transcription and a summary, also there is an option to translate it
 
+![alt text](https://github.com/ijzepeda-LC/hackathon/raw/master/bot.jpeg)
+
 # ============================
 
 
@@ -21,6 +23,8 @@ Our program uses the Whisper libraries for recording and processing audio, and t
 One of the most exciting features of our program is the ability to save the transcript and summary in PDF format, making it easy to share and review the information at a later time.
 
 We've put a lot of hard work into this program, and we're confident that it will assist the way people learn and retain information. Try it out for yourself and see how it can benefit you!
+
+
 # ============================
 
 This code implements a web application that allows users to summarize a lecture given by an audio file. It uses the Streamlit framework to build the interface and OpenAI's GPT-3 model to generate summaries.
