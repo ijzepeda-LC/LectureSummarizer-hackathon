@@ -3,7 +3,7 @@ import whisper
 import streamlit as st
 import openai 
 import toml
-from moviepy.editor import *
+# from moviepy.editor import *
 from fpdf import FPDF
 
 import datetime

@@ -1,7 +1,6 @@
 openai
 ffmpeg-python==0.2.0
-!apt-get install python-pyaudio
-!apt-get install portaudio19-dev
+wavio
 pyaudio
 fpdf
 sounddevice
