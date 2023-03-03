@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf32 -*-
 import os
 import whisper
 import streamlit as st
@@ -23,7 +21,7 @@ D =  t.strftime('%d-%m-%y_%H%M%S')
 WHISPER_MODEL='small'
 WHISPER_LANG='eng'
 audio_folder = './'
-
+pdf_folder="pdfs"
 models_text=("Ada","Babbage","Curie","Davinci (3k + languages)")
 models=['text-ada-001','text-babbage-001','text-curie-001','text-davinci-003']
 models_dic=dict(zip(models_text,models))
@@ -80,7 +78,11 @@ def save_pdf():
     pdf.set_font(font, size = 15)
     pdf.multi_cell(0, 10, txt = "Transcript:\n"+ st.session_state['transcript'])
     pdf.ln()
-    pdf.output(f"transcript_{D}.pdf",'F')#.encode('latin-1','ignore') 
+    # if path doesn't exists create it
+    if not os.path.exists(pdf_folder):
+        os.makedirs(pdf_folder)
+    pdf_path=os.path.join(pdf_folder,f"transcript_{D}.pdf")
+    pdf.output(pdf_path,'F')#.encode('latin-1','ignore') 
     return ""
  
 
