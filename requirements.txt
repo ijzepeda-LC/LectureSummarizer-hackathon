@@ -1,10 +1,11 @@
 openai
 ffmpeg-python==0.2.0
-wavio
-pyaudio
+streamlit
 fpdf
+toml
+whisper @ git+https://github.com/openai/whisper.git@f82bc59f5ea234d4b97fb2860842ed38519f7e65
+PyAudio
 sounddevice
 soundfile
-whisper
 moviepy
-toml
+python-telegram-bot
