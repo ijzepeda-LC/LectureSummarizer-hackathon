@@ -6,3 +6,4 @@ soundfile
 whisper
 moviepy
 toml
+PyAudio==0.2.11
