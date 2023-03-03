@@ -19,3 +19,9 @@ se puede colocar un password inicial para que no lo usen foraneos
 
 !apt-get install python-pyaudio
 !apt-get install portaudio19-dev
+
+
+PyAudio
+
+moviepy
+python-telegram-bot

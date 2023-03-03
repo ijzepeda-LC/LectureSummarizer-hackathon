@@ -14,3 +14,4 @@ output/.DS_Store
 *.wav
 *.ogg
 *.m4a
+.streamlit/secrets.toml
